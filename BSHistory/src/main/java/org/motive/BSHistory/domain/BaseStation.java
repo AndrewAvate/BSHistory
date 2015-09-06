@@ -18,6 +18,9 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "base_station")
@@ -64,6 +67,7 @@ public class BaseStation implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "CREATE_DATE")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd.MM.yyyy")
 	public Date getCreationDate() {
 		return creationDate;
 	}
@@ -93,7 +97,8 @@ public class BaseStation implements Serializable {
 	}
 
 	@Transient
-	public String getCreateDateString() {
+	@JsonIgnore
+	public String getCreationDateString() {
 		String createDateString = "";
 		if (this.getCreationDate() != null) {
 			createDateString = SimpleDateFormat
@@ -102,11 +107,11 @@ public class BaseStation implements Serializable {
 		}
 		return createDateString;
 	}
-
+	
 	public String toString() {
 		return "Base Station - Id: " + getId() + ", title: " + getTitle()
 				+ ", creation date: "
-				+ getCreateDateString() + ", Description: " + (getDescription()==null?"-":getDescription());
+				+ getCreationDateString() + ", Description: " + (getDescription()==null?"-":getDescription());
 	}
 
 }

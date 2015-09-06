@@ -9,35 +9,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/common")
 public class BaseStationController {
 
 	@Autowired
-	private IBSService bsService;
+	private IBSService service;
 
 	@RequestMapping(value = "/hello", method = RequestMethod.GET)
 	public String printWelcome(Model model, String title, Long id) {
 
 		BaseStation baseStation = null;
-		if (id != null) {
-			baseStation = bsService.findById(id);
-		} else if (null != title) {
-			baseStation = bsService.findByTitle(title);
+		if (id != null && title != null) {
+			baseStation = service.findByIdAndTitle(id, title);
 		}
+		else if (id != null) {
+			baseStation = service.findById(id);
+		} else if (null != title) {
+			baseStation = service.findByTitle(title);
+		}
+
 
 		model.addAttribute("message", "Spring 4 MVC - Hello World "
 				+ baseStation);
 
 		return "home";
 	}
-
+	
 	// gettser & setters
 
-	public IBSService getBsService() {
-		return bsService;
+	public IBSService geService() {
+		return service;
 	}
 
-	public void setBsService(IBSService bsService) {
-		this.bsService = bsService;
+	public void setService(IBSService service) {
+		this.service = service;
 	}
 }

@@ -1,4 +1,4 @@
-package domainTests;
+package org.motive.BSHistory.domain;
 
 import static org.junit.Assert.assertEquals;
 import java.util.Date;
@@ -43,7 +43,7 @@ public class BaseStationTest {
 		assertEquals("base station \"description\" on init", null,
 				emtptyBS.getDescription());
 		assertEquals("filled base station \"formatted creation date\"", "",
-				emtptyBS.getCreateDateString());
+				emtptyBS.getCreationDateString());
 
 	}
 
@@ -61,7 +61,7 @@ public class BaseStationTest {
 		assertEquals("filled base station \"description\"",
 				"description for test", filledBS.getDescription());
 		assertEquals("filled base station \"formatted creation date\"",
-				"01.01.1970", filledBS.getCreateDateString());
+				"01.01.1970", filledBS.getCreationDateString());
 		assertEquals(
 				"filled base station \"toString()\"",
 				"Base Station - Id: 123, title: bsTestTitle, creation date: 01.01.1970, Description: description for test",

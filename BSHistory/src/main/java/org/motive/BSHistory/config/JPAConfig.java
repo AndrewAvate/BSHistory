@@ -67,9 +67,9 @@ public class JPAConfig {
 		Properties properties = new Properties();
 		properties.setProperty("hibernate.dialect",
 				"org.hibernate.dialect.H2Dialect");
-//		properties.setProperty("hibernate.max_fetch_depth", "3");
-//		properties.setProperty("hibernate.jdbc.fetch_size", "50");
-//		properties.setProperty("hibernate.jdbc.batch_size", "10");
+		properties.setProperty("hibernate.max_fetch_depth", "3");
+		properties.setProperty("hibernate.jdbc.fetch_size", "50");
+		properties.setProperty("hibernate.jdbc.batch_size", "10");
 		properties.setProperty("hibernate.show_sql", "true");
 		return properties;
 	}

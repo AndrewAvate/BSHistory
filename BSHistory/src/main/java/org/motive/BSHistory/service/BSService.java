@@ -15,8 +15,8 @@ public class BSService implements IBSService {
 
 	private static final String LIST_SELECT_QUERY = "SELECT DISTINCT c FROM BaseStation c";
 	private static final String SELECT_BY_ID_QUERY = "SELECT DISTINCT c FROM BaseStation c WHERE c.id=:id";
-	private static final String SELECT_BY_TITLE_QUERY = "SELECT DISTINCT c FROM BaseStation c WHERE c.bsTitle=:title";
-		
+	private static final String SELECT_BY_TITLE_QUERY = "SELECT DISTINCT c FROM BaseStation c WHERE c.title=:title";
+	private static final String SELECT_BY_ID_AND_TITLE_QUERY = "SELECT DISTINCT c FROM BaseStation c WHERE c.id=:id and c.title=:title";	
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -54,6 +54,20 @@ public class BSService implements IBSService {
 	public BaseStation findByTitle(String title) {
 		Query query = entityManager.createQuery(SELECT_BY_TITLE_QUERY);
 		query.setParameter("title", title);	
+		@SuppressWarnings("unchecked")
+		List<BaseStation> result = query.getResultList();
+		if (result.size()==1)
+		{
+			return result.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	public BaseStation findByIdAndTitle(Long id, String title) {
+		Query query = entityManager.createQuery(SELECT_BY_ID_AND_TITLE_QUERY);
+		query.setParameter("title", title);	
+		query.setParameter("id", id);	
 		@SuppressWarnings("unchecked")
 		List<BaseStation> result = query.getResultList();
 		if (result.size()==1)
