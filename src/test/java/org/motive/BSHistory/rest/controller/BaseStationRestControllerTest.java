@@ -1,9 +1,6 @@
-package org.motive.BSHistory.rest;
+package org.motive.BSHistory.rest.controller;
 
-import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.isA;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -21,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.motive.BSHistory.domain.BaseStation;
+import org.motive.BSHistory.rest.controller.BaseStationRestController;
 import org.motive.BSHistory.service.IBSService;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -57,34 +55,11 @@ public class BaseStationRestControllerTest {
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 
 		// create mocks for service
-		when(service.findByIdAndTitle(123L, "bsTestTitle"))
-				.thenReturn(filledBS);
 		when(service.findById(123L)).thenReturn(filledBS);
-		when(service.findByTitle("bsTestTitle")).thenReturn(filledBS);
+		when(service.findById(1L)).thenReturn(null);
 		when(service.findAll()).thenReturn(baseStationList);
 	}
 	
-	@Test
-	public void testGetByID() throws Exception {
-		mockMvc.perform(get("/rs/bs?id=123"))
-		.andExpect(status().isOk())
-
-		.andExpect(jsonPath("$.title").value(filledBS.getTitle()))
-		.andExpect(
-				MockMvcResultMatchers.jsonPath("$.id").value(
-						isA(Number.class)))
-		.andExpect(
-				MockMvcResultMatchers.jsonPath("$.id").value(
-						anyOf(equalTo((Number) filledBS.getId()),
-								equalTo((Number) filledBS.getId()
-										.intValue()))))
-		.andExpect(
-				jsonPath("$.description").value(filledBS.getDescription()))
-		.andExpect(jsonPath("$.application", isEmptyOrNullString()))
-		.andExpect(
-				jsonPath("$.creationDate").value(filledBS.getCreationDateString()));
-
-	}
 
 	@Test
 	public void testList() throws Exception {
@@ -131,4 +106,19 @@ public class BaseStationRestControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()).andDo(print());
 	}
+	
+	@Test
+	public void getExistingBaseStationTest() throws Exception {
+		mockMvc.perform(get("/rs/baseStation/"+filledBS.getId()))
+		.andExpect(jsonPath("$.title").value(filledBS.getTitle()))
+		.andExpect(jsonPath("$.links[*].href", hasItem(endsWith("/baseStation/123"))))
+		.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void getNonExistingBaseStationTest() throws Exception {
+		mockMvc.perform(get("/rs/baseStation/1"))
+		.andExpect(status().isNotFound());
+	}
+	
 }
