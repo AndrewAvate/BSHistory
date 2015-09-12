@@ -1,12 +1,16 @@
 package org.motive.BSHistory.rest.controllers;
 
+import java.net.URI;
 import java.util.List;
 
 import org.motive.BSHistory.core.models.entities.BaseStation;
 import org.motive.BSHistory.core.services.IBSService;
+import org.motive.BSHistory.core.services.exceptions.BaseStationExistsException;
+import org.motive.BSHistory.rest.exceptions.ConflictException;
 import org.motive.BSHistory.rest.resources.BaseStationResource;
 import org.motive.BSHistory.rest.resources.asm.BaseStationResourceAsm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,15 +27,16 @@ public class BaseStationRestController {
 	@Autowired
 	private IBSService service;
 	
-	@RequestMapping(value = "", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<BaseStationResource> createBaseStation(@RequestBody BaseStationResource baseStationRes) {
-		BaseStation createdBaseStation = service.create(baseStationRes.toBaseStation());
-		if (createdBaseStation != null) {
-			BaseStationResource res = new BaseStationResourceAsm()
-					.toResource(createdBaseStation);
-			return new ResponseEntity<BaseStationResource>(res, HttpStatus.OK);
-		} else {
-			return new ResponseEntity<BaseStationResource>(HttpStatus.CONFLICT);
+		try {
+			BaseStation createdBaseStation = service.create(baseStationRes.toBaseStation());
+			BaseStationResource res = new BaseStationResourceAsm().toResource(createdBaseStation);
+			HttpHeaders headers = new HttpHeaders();
+			headers.setLocation(URI.create(res.getLink("self").getHref()));
+			return new ResponseEntity<BaseStationResource>(res, headers, HttpStatus.CREATED);
+		} catch (BaseStationExistsException exception) {
+			throw new ConflictException(exception);
 		}
 	}
 

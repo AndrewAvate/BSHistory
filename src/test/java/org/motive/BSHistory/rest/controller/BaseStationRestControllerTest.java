@@ -108,7 +108,7 @@ public class BaseStationRestControllerTest {
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(jsonPath("$.title").value(filledBS.getTitle()))
 				.andExpect(jsonPath("$.links[*].href", hasItem(endsWith("/baseStation/123"))))
-				.andExpect(status().isOk()).andDo(print());
+				.andExpect(status().isCreated()).andDo(print());
 	}
 
 	@Test
