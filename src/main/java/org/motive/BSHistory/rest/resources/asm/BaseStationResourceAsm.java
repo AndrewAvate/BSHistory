@@ -1,12 +1,13 @@
 package org.motive.BSHistory.rest.resources.asm;
 
-import org.motive.BSHistory.domain.BaseStation;
-import org.motive.BSHistory.rest.controller.BaseStationRestController;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
+import org.motive.BSHistory.core.models.entities.BaseStation;
+import org.motive.BSHistory.rest.controllers.BaseStationRestController;
 import org.motive.BSHistory.rest.resources.BaseStationResource;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 public class BaseStationResourceAsm extends ResourceAssemblerSupport<BaseStation, BaseStationResource>{
 

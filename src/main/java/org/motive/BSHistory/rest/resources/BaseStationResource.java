@@ -2,6 +2,7 @@ package org.motive.BSHistory.rest.resources;
 
 import java.util.Date;
 
+import org.motive.BSHistory.core.models.entities.BaseStation;
 import org.springframework.hateoas.ResourceSupport;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -45,5 +46,14 @@ public class BaseStationResource extends ResourceSupport {
 	public void setApplication(byte[] application) {
 		this.application = application;
 	}
+	
+    public BaseStation toBaseStation() {
+    	BaseStation baseStation = new BaseStation();
+    	baseStation.setTitle(title);
+    	baseStation.setApplication(application);
+    	baseStation.setCreationDate(creationDate);
+    	baseStation.setDescription(description);
+        return baseStation;
+    }
 
 }

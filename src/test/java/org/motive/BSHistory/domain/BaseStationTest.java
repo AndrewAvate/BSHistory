@@ -1,10 +1,12 @@
 package org.motive.BSHistory.domain;
 
 import static org.junit.Assert.assertEquals;
+
 import java.util.Date;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.motive.BSHistory.domain.BaseStation;
+import org.motive.BSHistory.core.models.entities.BaseStation;
 
 public class BaseStationTest {
 
