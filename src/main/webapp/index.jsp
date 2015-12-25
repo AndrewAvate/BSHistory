@@ -7,6 +7,6 @@
 <title>Welcome page</title>
 </head>
 <body>
-	Hello World
+	Hello_World
 </body>
 </html>
